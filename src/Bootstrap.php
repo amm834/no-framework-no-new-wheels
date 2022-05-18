@@ -25,8 +25,10 @@ match ($environment) {
     'prod' => 'User error'
 };
 
-$request = new HttpRequest($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
-$response = new HttpResponse();
+$injector = include('Dependencies.php');
+
+$request = $injector->make(HttpRequest::class);
+$response = $injector->make(HttpResponse::class);
 
 
 $routeDefinitionCallback = static function (RouteCollector $r) {
@@ -52,7 +54,7 @@ switch ($routeInfo[0]) {
         $className = $routeInfo[1][0];
         $method = $routeInfo[1][1];
         $vars = $routeInfo[2];
-        $class = new $className($response);
+        $class = $injector->make($className);
         echo $class->$method($vars);
         break;
 }
