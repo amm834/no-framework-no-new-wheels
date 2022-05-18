@@ -2,6 +2,7 @@
 
 namespace Framework\Controllers;
 
+use Framework\Renderer;
 use Http\Request;
 use Http\Response;
 
@@ -9,15 +10,18 @@ class HomePage
 {
     public function __construct(
         private Response $response,
-        private Request  $request
+        private Request  $request,
+        private Renderer $renderer
     )
     {
     }
 
     public function show()
     {
-        $content = '<h1>Hello World</h1>';
-        $content .= 'Hello ' . $this->request->getParameter('name', 'stranger');
-        $this->response->setContent($content);
+        $html = $this->renderer->render('HomePage', [
+            'name' => $this->request->getParameter('name', 'Unknown')
+        ]);
+        $this->response->setContent($html);
     }
+
 }
