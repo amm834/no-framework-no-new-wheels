@@ -2,10 +2,18 @@
 
 namespace Framework\Controllers;
 
+use Http\Response;
+
 class HomePage
 {
+    public function __construct(
+        private Response $response
+    )
+    {
+    }
+
     public function show()
     {
-        echo "Home Page";
+        $this->response->setContent("Hello World");
     }
 }
